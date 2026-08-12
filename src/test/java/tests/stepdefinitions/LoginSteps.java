@@ -22,13 +22,13 @@ public class LoginSteps {
         loginPage.navigateToLoginPage();
     }
 
-    @When("User enters username as {string}")
-    public void userEntersUsername(String username) {
-        logger.info("User entering username: {}", username);
+    @When("User enters email as {string}")
+    public void userEntersEmail(String email) {
+        logger.info("User entering email: {}", email);
         if (loginPage == null) {
             loginPage = new LoginPage();
         }
-        loginPage.enterUsername(username);
+        loginPage.enterEmail(email);
     }
 
     @When("User enters password as {string}")
@@ -49,11 +49,11 @@ public class LoginSteps {
         loginPage.clickLoginButton();
     }
 
-    @When("User login with credentials {string} and {string}")
-    public void userLoginWithCredentials(String username, String password) {
+    @When("User login with email {string} and password {string}")
+    public void userLoginWithCredentials(String email, String password) {
         logger.info("User logging in with credentials");
         loginPage = new LoginPage();
-        loginPage.loginWithCredentials(username, password);
+        loginPage.loginWithCredentials(email, password);
     }
 
     @When("User logs in with demo credentials")

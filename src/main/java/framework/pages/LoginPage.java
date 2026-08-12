@@ -4,10 +4,9 @@ import org.openqa.selenium.By;
 import framework.config.ConfigReader;
 
 public class LoginPage extends BasePage {
-    private static final By USERNAME_INPUT = By.xpath("//label[normalize-space()='Email']/following::input[1]");
+    private static final By EMAIL_INPUT = By.xpath("//label[normalize-space()='Email']/following::input[1]");
     private static final By PASSWORD_INPUT = By.xpath("//label[normalize-space()='Password']/following::input[1]");
     private static final By LOGIN_BUTTON = By.xpath("//button[normalize-space()='Sign In']");
-    private static final By INVALID_CREDENTIALS_MESSAGE = By.xpath("//*[contains(text(), 'Invalid email or password')]");
     private static final By EMAIL_VALIDATION_MESSAGE = By.xpath("//*[contains(text(), 'Enter a valid email')]");
     private static final By PASSWORD_VALIDATION_MESSAGE = By.xpath("//*[contains(text(), 'Password must be at least 6 characters')]");
     private static final By ERROR_MESSAGE = By.xpath(
@@ -24,8 +23,8 @@ public class LoginPage extends BasePage {
         navigateTo(ConfigReader.getBaseUrl());
     }
 
-    public void enterUsername(String username) {
-        type(USERNAME_INPUT, username);
+    public void enterEmail(String email) {
+        type(EMAIL_INPUT, email);
     }
 
     public void enterPassword(String password) {
@@ -36,8 +35,8 @@ public class LoginPage extends BasePage {
         click(LOGIN_BUTTON);
     }
 
-    public void loginWithCredentials(String username, String password) {
-        enterUsername(username);
+    public void loginWithCredentials(String email, String password) {
+        enterEmail(email);
         enterPassword(password);
         clickLoginButton();
     }
@@ -49,11 +48,6 @@ public class LoginPage extends BasePage {
 
     public boolean isErrorMessageDisplayed() {
         return isElementDisplayed(ERROR_MESSAGE);
-    }
-
-    public String getInvalidCredentialsMessage() {
-        waitForElementToBeVisible(INVALID_CREDENTIALS_MESSAGE);
-        return getText(INVALID_CREDENTIALS_MESSAGE);
     }
 
     public String getEmailValidationMessage() {
