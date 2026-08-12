@@ -1,0 +1,23 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "testuser1",
+      "firstName": "John",
+      "lastName": "Student",
+      "email": "testuser1@example.com"
+    },
+    {
+      "id": 2,
+      "username": "testuser2",
+      "firstName": "Admin",
+      "lastName": "User",
+      "email": "testuser2@example.com"
+    }
+  ],
+  "apiEndpoints": {
+    "baseUrl": "https://api.example.com/v1",
+    "loginEndpoint": "/auth/login",
+    "usersEndpoint": "/users"
+  }
+}
