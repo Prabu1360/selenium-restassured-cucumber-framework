@@ -8,24 +8,17 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
-# Runtime stage
+# Runtime stage - use image with Chrome pre-installed
 FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
-# Install Chrome and dependencies for Selenium
+# Install basic tools and Chromium (lighter than Chrome, works for headless)
 RUN apt-get update && apt-get install -y \
-    wget \
-    unzip \
+    chromium-browser \
     curl \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
-
-# Install Chrome
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
-    apt-get update && \
-    apt-get install -y google-chrome-stable && \
-    rm -rf /var/lib/apt/lists/*
 
 # Copy built application from builder stage
 COPY --from=builder /app/target /app/target
@@ -36,5 +29,5 @@ COPY --from=builder /root/.m2 /root/.m2
 # Copy test resources
 COPY src/test/resources /app/src/test/resources
 
-# Run tests with headless mode
+# Run Maven (skip tests for now)
 CMD ["mvn", "clean", "install", "-DskipTests"]
