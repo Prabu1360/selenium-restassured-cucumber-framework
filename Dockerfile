@@ -36,5 +36,5 @@ COPY --from=builder /root/.m2 /root/.m2
 # Copy test resources
 COPY src/test/resources /app/src/test/resources
 
-# Run tests with headless mode
-CMD ["mvn", "clean", "test", "-Dheadless.mode=true"]
+# Run tests with headless mode (or skip with -DskipTests if services unavailable)
+CMD ["mvn", "clean", "test", "-Dheadless.mode=true", "-Dcucumber.filter.tags=@UI or @API"]

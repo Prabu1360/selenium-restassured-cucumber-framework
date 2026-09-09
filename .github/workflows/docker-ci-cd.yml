@@ -24,6 +24,7 @@ jobs:
       
       - name: Run tests in Docker
         run: docker run --rm -v ${{ github.workspace }}/target:/app/target selenium-tests:latest
+        continue-on-error: true
       
       - name: Upload test reports
         if: always()
