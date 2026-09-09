@@ -28,14 +28,12 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/* && \
     which mvn && which java
 
-# Copy built application from builder stage
-COPY --from=builder /app/target /app/target
+# Copy pom.xml and source code from builder stage
 COPY --from=builder /app/pom.xml /app/pom.xml
 COPY --from=builder /app/src /app/src
-COPY --from=builder /root/.m2 /root/.m2
 
-# Copy test resources
-COPY src/test/resources /app/src/test/resources
+# Copy Maven cache from builder to avoid re-downloading dependencies
+COPY --from=builder /root/.m2 /root/.m2
 
 # Run tests with headless mode (browser parameter from Maven or environment)
 CMD ["mvn", "clean", "test", "-Dheadless.mode=true"]
