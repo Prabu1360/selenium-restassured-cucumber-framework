@@ -14,7 +14,9 @@ FROM ubuntu:22.04
 WORKDIR /app
 
 # Install Java 17, Maven, and browsers
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y \
     openjdk-17-jdk \
     maven \
     chromium-browser \
@@ -23,7 +25,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     ca-certificates \
     wget \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* && \
+    which mvn && which java
 
 # Copy built application from builder stage
 COPY --from=builder /app/target /app/target
