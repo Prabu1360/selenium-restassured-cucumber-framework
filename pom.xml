@@ -21,7 +21,6 @@
     <slf4j.version>2.0.9</slf4j.version>
     <logback.version>1.4.11</logback.version>
     <webdrivermanager.version>5.6.3</webdrivermanager.version>
-    <allure.version>2.13.10</allure.version>
     <!-- Parallel Execution Config -->
     <parallel.threads>3</parallel.threads>
     <cucumber.parallel.threads>3</cucumber.parallel.threads>
@@ -105,14 +104,6 @@
       <version>2.10.1</version>
     </dependency>
 
-    <!-- Allure Reports for Enhanced Test Reporting (Compatible Version) -->
-    <dependency>
-      <groupId>io.qameta.allure</groupId>
-      <artifactId>allure-junit5</artifactId>
-      <version>${allure.version}</version>
-      <scope>test</scope>
-    </dependency>
-
     <!-- Cucumber HTML Reports -->
     <dependency>
       <groupId>io.cucumber</groupId>
@@ -174,30 +165,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-
-      <!-- Allure Report Plugin (Compatible Version) -->
-      <plugin>
-        <groupId>io.qameta.allure</groupId>
-        <artifactId>allure-maven</artifactId>
-        <version>2.11.2</version>
-        <configuration>
-          <reportVersion>${allure.version}</reportVersion>
-          <resultsDirectory>target/allure-results</resultsDirectory>
-          <reportDirectory>target/allure-report</reportDirectory>
-        </configuration>
-      </plugin>
-
-      <!-- Maven Failsafe Plugin (for integration tests) -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.1.2</version>
-        <configuration>
-          <parallel>all</parallel>
-          <threadCount>${parallel.threads}</threadCount>
-          <reportFormat>json</reportFormat>
-        </configuration>
       </plugin>
     </plugins>
   </build>
