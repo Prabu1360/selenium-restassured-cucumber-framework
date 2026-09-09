@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  tests:
+    build: .
+    container_name: selenium-tests
+    environment:
+      - headless.mode=true
+      - browser=chrome
+    volumes:
+      - ./target:/app/target
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
