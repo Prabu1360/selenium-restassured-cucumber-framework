@@ -45,11 +45,20 @@ public class DriverFactory {
             logger.debug("Chrome launched in headless mode");
         }
 
+        // For Docker/CI environments - use Chromium
+        String chromiumPath = "/usr/bin/chromium-browser";
+        java.io.File chromiumFile = new java.io.File(chromiumPath);
+        if (chromiumFile.exists()) {
+            options.setBinary(chromiumPath);
+            logger.debug("Using Chromium from: {}", chromiumPath);
+        }
+
         options.addArguments(
                 "--disable-blink-features=AutomationControlled",
                 "--disable-web-resources-blocking",
                 "--no-sandbox",
-                "--disable-dev-shm-usage"
+                "--disable-dev-shm-usage",
+                "--disable-gpu"
         );
 
         return new ChromeDriver(options);

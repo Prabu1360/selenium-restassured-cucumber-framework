@@ -29,5 +29,5 @@ COPY --from=builder /root/.m2 /root/.m2
 # Copy test resources
 COPY src/test/resources /app/src/test/resources
 
-# Run Maven (skip tests for now)
-CMD ["mvn", "clean", "install", "-DskipTests"]
+# Run tests with headless mode
+CMD ["mvn", "clean", "test", "-Dheadless.mode=true"]
