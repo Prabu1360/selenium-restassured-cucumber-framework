@@ -8,17 +8,21 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
-# Runtime stage - use image with Chromium (Firefox can be tested locally)
-FROM eclipse-temurin:17-jdk
+# Runtime stage - use Ubuntu with both browsers available
+FROM ubuntu:22.04
 
 WORKDIR /app
 
-# Install basic tools and Chromium (lighter, more stable in CI/CD)
+# Install Java 17, Maven, and browsers
 RUN apt-get update && apt-get install -y \
+    openjdk-17-jdk \
+    maven \
     chromium-browser \
+    firefox \
     curl \
     unzip \
     ca-certificates \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy built application from builder stage
