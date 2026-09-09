@@ -8,16 +8,19 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
-# Runtime stage - use image with Chrome pre-installed
+# Runtime stage - use image with both Chrome and Firefox
 FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
-# Install basic tools and Chromium (lighter than Chrome, works for headless)
+# Install basic tools, Chromium, and Firefox (both for headless testing)
 RUN apt-get update && apt-get install -y \
     chromium-browser \
+    firefox-esr \
+    xvfb \
     curl \
     unzip \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy built application from builder stage
@@ -29,5 +32,9 @@ COPY --from=builder /root/.m2 /root/.m2
 # Copy test resources
 COPY src/test/resources /app/src/test/resources
 
-# Run tests with headless mode
+# Set environment variables
+ENV BROWSER=${browser:-chrome}
+ENV HEADLESS_MODE=true
+
+# Run tests with headless mode and browser from environment variable
 CMD ["mvn", "clean", "test", "-Dheadless.mode=true"]

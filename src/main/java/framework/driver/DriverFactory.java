@@ -73,6 +73,20 @@ public class DriverFactory {
             logger.debug("Firefox launched in headless mode");
         }
 
+        // For Docker/CI environments - use Firefox binary if available
+        String firefoxPath = "/usr/bin/firefox";
+        java.io.File firefoxFile = new java.io.File(firefoxPath);
+        if (firefoxFile.exists()) {
+            options.setBinary(firefoxPath);
+            logger.debug("Using Firefox from: {}", firefoxPath);
+        }
+
+        options.addArguments(
+                "--disable-blink-features=AutomationControlled",
+                "--disable-web-resources-blocking",
+                "--no-sandbox"
+        );
+
         return new FirefoxDriver(options);
     }
 

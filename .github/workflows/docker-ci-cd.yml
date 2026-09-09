@@ -33,8 +33,10 @@ jobs:
         run: |
           docker run --rm \
             -e browser=${{ matrix.browser }} \
+            -e headless.mode=true \
             -v ${{ github.workspace }}/target:/app/target \
-            selenium-tests:${{ matrix.browser }}-latest
+            selenium-tests:${{ matrix.browser }}-latest \
+            mvn clean test -Dheadless.mode=true -Dbrowser=${{ matrix.browser }}
         continue-on-error: true
       
       - name: Generate Allure Report
