@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # Chrome Tests
+  chrome-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.advanced
+    container_name: selenium-chrome-tests
+    environment:
+      - browser=chrome
+      - headless.mode=true
+      - parallel.threads=3
+    volumes:
+      - ./target:/app/target
+      - ./target/allure-results:/app/target/allure-results
+    networks:
+      - test-network
+    depends_on:
+      - test-network
+
+  # Firefox Tests
+  firefox-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.advanced
+    container_name: selenium-firefox-tests
+    environment:
+      - browser=firefox
+      - headless.mode=true
+      - parallel.threads=3
+    volumes:
+      - ./target:/app/target
+      - ./target/allure-results:/app/target/allure-results
+    networks:
+      - test-network
+    depends_on:
+      - test-network
+
+  # Mock API Server (optional)
+  # mock-api:
+  #   image: mockserver/mockserver:latest
+  #   ports:
+  #     - "1080:1080"
+  #   environment:
+  #     MOCKSERVER_PROPERTY_FILE: /mockserver/mockserver-init.properties
+  #   networks:
+  #     - test-network
+
+networks:
+  test-network:
+    driver: bridge
+
+# Volume for test results
+volumes:
+  allure-results:
+    driver: local

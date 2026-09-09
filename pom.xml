@@ -21,6 +21,9 @@
     <slf4j.version>2.0.9</slf4j.version>
     <logback.version>1.4.11</logback.version>
     <webdrivermanager.version>5.6.3</webdrivermanager.version>
+    <!-- Parallel Execution Config -->
+    <parallel.threads>3</parallel.threads>
+    <cucumber.parallel.threads>3</cucumber.parallel.threads>
   </properties>
 
   <dependencies>
@@ -88,6 +91,20 @@
       <version>2.10.1</version>
     </dependency>
 
+    <!-- Allure Reports for Enhanced Test Reporting -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-junit5</artifactId>
+      <version>2.21.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-cucumber7-jvm</artifactId>
+      <version>2.21.0</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Cucumber HTML Reports -->
     <dependency>
       <groupId>io.cucumber</groupId>
@@ -108,6 +125,14 @@
           <includes>
             <include>**/TestRunner.java</include>
           </includes>
+          <!-- Parallel Execution Configuration -->
+          <parallel>all</parallel>
+          <threadCount>${parallel.threads}</threadCount>
+          <perCoreThreadCount>true</perCoreThreadCount>
+          <reuseForks>true</reuseForks>
+          <!-- Report Generation -->
+          <reportFormat>plain</reportFormat>
+          <reportFormat>json</reportFormat>
         </configuration>
       </plugin>
 
@@ -141,6 +166,30 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <!-- Allure Report Plugin -->
+      <plugin>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
+        <version>2.12.0</version>
+        <configuration>
+          <reportVersion>2.21.0</reportVersion>
+          <resultsDirectory>target/allure-results</resultsDirectory>
+          <reportDirectory>target/allure-report</reportDirectory>
+        </configuration>
+      </plugin>
+
+      <!-- Maven Failsafe Plugin (for integration tests) -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.1.2</version>
+        <configuration>
+          <parallel>all</parallel>
+          <threadCount>${parallel.threads}</threadCount>
+          <reportFormat>json</reportFormat>
+        </configuration>
       </plugin>
     </plugins>
   </build>
