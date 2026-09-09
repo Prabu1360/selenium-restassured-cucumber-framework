@@ -37,6 +37,18 @@ jobs:
             selenium-tests:${{ matrix.browser }}-latest
         continue-on-error: true
       
+      - name: Generate Allure Report
+        if: always()
+        run: mvn allure:report -DskipTests || true
+      
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ matrix.browser }}
+          path: target/allure-report/
+          retention-days: 30
+      
       - name: Upload Cucumber Reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -78,14 +90,15 @@ jobs:
           echo "- Branch: ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Reports Generated" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Allure Reports (Advanced)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Cucumber Reports (HTML)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Screenshots on Failure" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Test Logs" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Artifacts Available" >> $GITHUB_STEP_SUMMARY
+          echo "- allure-report-chrome" >> $GITHUB_STEP_SUMMARY
+          echo "- allure-report-firefox" >> $GITHUB_STEP_SUMMARY
           echo "- cucumber-reports-chrome" >> $GITHUB_STEP_SUMMARY
           echo "- cucumber-reports-firefox" >> $GITHUB_STEP_SUMMARY
-          echo "- screenshots-chrome" >> $GITHUB_STEP_SUMMARY
-          echo "- screenshots-firefox" >> $GITHUB_STEP_SUMMARY
-          echo "- logs-chrome" >> $GITHUB_STEP_SUMMARY
-          echo "- logs-firefox" >> $GITHUB_STEP_SUMMARY
+          echo "- screenshots-chrome / screenshots-firefox" >> $GITHUB_STEP_SUMMARY
+          echo "- logs-chrome / logs-firefox" >> $GITHUB_STEP_SUMMARY

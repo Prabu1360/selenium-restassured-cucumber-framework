@@ -21,6 +21,7 @@
     <slf4j.version>2.0.9</slf4j.version>
     <logback.version>1.4.11</logback.version>
     <webdrivermanager.version>5.6.3</webdrivermanager.version>
+    <allure.version>2.20.1</allure.version>
     <!-- Parallel Execution Config -->
     <parallel.threads>3</parallel.threads>
     <cucumber.parallel.threads>3</cucumber.parallel.threads>
@@ -111,6 +112,22 @@
       <version>${cucumber.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Allure Reporting for Cucumber 7 -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-cucumber7-jvm</artifactId>
+      <version>${allure.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Allure JUnit5 Integration -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-junit5</artifactId>
+      <version>${allure.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -132,6 +149,13 @@
           <!-- Report Generation -->
           <reportFormat>plain</reportFormat>
           <reportFormat>json</reportFormat>
+          <!-- Allure Listener -->
+          <properties>
+            <property>
+              <name>listener</name>
+              <value>io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm</value>
+            </property>
+          </properties>
         </configuration>
       </plugin>
 
@@ -165,6 +189,18 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <!-- Allure Report Plugin (Compatible Version 2.20.1) -->
+      <plugin>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
+        <version>2.11.2</version>
+        <configuration>
+          <reportVersion>${allure.version}</reportVersion>
+          <resultsDirectory>target/allure-results</resultsDirectory>
+          <reportDirectory>target/allure-report</reportDirectory>
+        </configuration>
       </plugin>
     </plugins>
   </build>
